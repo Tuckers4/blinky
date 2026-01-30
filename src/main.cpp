@@ -7,8 +7,27 @@
 
 
 // Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+#define BLINKING_RATE     200ms
 
+
+void ping_pong(DigitalOut led1, DigitalOut led2, DigitalOut led3) {
+    led1 = 1;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led1 = 0;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led2 = 1;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led2 = 0;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led3 = 1;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led3 = 0;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led2 = 1;
+    ThisThread::sleep_for(BLINKING_RATE);
+    led2 = 0;
+    ThisThread::sleep_for(BLINKING_RATE);
+}
 
 int main() {
     // Initialise the appropriate digital pins as outputs
@@ -22,21 +41,7 @@ int main() {
     bool led3;
 #endif
 
-    int counter = 0;
-
     while (true) {
-        led2 = !led2;
-        if (counter % 2 == 0) {
-            led1 = !led1;
-        }
-        if (counter % 4 == 0) {
-            led3 = !led3;
-        }
-        ThisThread::sleep_for(BLINKING_RATE);
-        counter++;
-        //Counter reset to prevent eventual integer overflow
-        if (counter == 4) {
-            counter = 0;
-        }
+        ping_pong(led1, led2, led3);
     }
 }
