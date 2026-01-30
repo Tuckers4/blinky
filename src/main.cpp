@@ -10,8 +10,7 @@
 #define BLINKING_RATE     500ms
 
 
-int main()
-{
+int main() {
     // Initialise the appropriate digital pins as outputs
 #if defined(LED1) && defined(LED2) && defined(LED3)
     DigitalOut led1(LED1);
@@ -23,10 +22,21 @@ int main()
     bool led3;
 #endif
 
+    int counter = 0;
+
     while (true) {
-        led1 = !led1;
         led2 = !led2;
-        led3 = !led3;
+        if (counter % 2 == 0) {
+            led1 = !led1;
+        }
+        if (counter % 4 == 0) {
+            led3 = !led3;
+        }
         ThisThread::sleep_for(BLINKING_RATE);
+        counter++;
+        //Counter reset to prevent eventual integer overflow
+        if (counter == 4) {
+            counter = 0;
+        }
     }
 }
